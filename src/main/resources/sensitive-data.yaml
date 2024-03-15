@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
+    driver-class-name: org.postgresql.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${oauth.github.client-id}
+            client-secret: ${oauth.github.client-secret}
+            scope:
+              - email
+          google:
+            client-id: ${oauth.google.client-id}
+            client-secret: ${oauth.google.client-secret}
+            scope:
+              - email
+              - profile
+          gitlab:
+            client-id: ${oauth.gitlab.client-id}
+            client-secret: ${oauth.gitlab.client-secret}
+            client-name: GitLab
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope: read_user
+        provider:
+          gitlab:
+            authorization-uri: https://gitlab.com/oauth/authorize
+            token-uri: https://gitlab.com/oauth/token
+            user-info-uri: https://gitlab.com/api/v4/user
+            user-name-attribute: email
+
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+    host: smtp.gmail.com
+    username: ${mail.username}
+    password: ${mail.password}
+    port: 587
