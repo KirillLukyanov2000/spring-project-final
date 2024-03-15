@@ -7,14 +7,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @UtilityClass
 public class FileUtil {
@@ -25,21 +21,19 @@ public class FileUtil {
             throw new IllegalRequestDataException("Select a file to upload.");
         }
         try {
-            Path dir = Paths.get(directoryPath);
+            Path dir = Path.of(directoryPath);
             if (!Files.exists(dir)) {
                 Files.createDirectories(dir);
             }
             Path newFilePath = dir.resolve(fileName);
-            try (OutputStream outputStream = Files.newOutputStream(newFilePath)) {
-                outputStream.write(multipartFile.getBytes());
-            }
+            Files.write(newFilePath, multipartFile.getBytes());
         } catch (IOException ex) {
             throw new IllegalRequestDataException("Failed to upload file" + multipartFile.getOriginalFilename());
         }
     }
 
     public static Resource download(String fileLink) {
-        Path path = Paths.get(fileLink);
+        Path path = Path.of(fileLink);
         try {
             Resource resource = new UrlResource(path.toUri());
             if (resource.exists() || resource.isReadable()) {
@@ -53,7 +47,7 @@ public class FileUtil {
     }
 
     public static void delete(String fileLink) {
-        Path path = Paths.get(fileLink);
+        Path path = Path.of(fileLink);
         try {
             Files.delete(path);
         } catch (IOException ex) {
