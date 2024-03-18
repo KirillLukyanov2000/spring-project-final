@@ -1,0 +1,46 @@
+version: '4.23.0'
+
+services:
+  app:
+    container_name: jira
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file:
+      - secret_data.env
+    networks:
+      - backend
+
+  db:
+    container_name: postgres-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    env_file:
+      - secret_data.env
+    volumes:
+      - C:\MyDockerVolume\pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - backend
+    depends_on:
+      app:
+        condition: service_started
+
+networks:
+  backend:
+    driver: bridge
