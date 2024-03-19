@@ -9,7 +9,7 @@ app:
 
 spring:
   config:
-    import: sensitive-data.yaml, secret-data.properties
+    import: sensitive-data.yaml, secret-data.properties, locale.properties, locale_en.properties, locale_ru.properties, locale_es.properties
   init:
     mode: never
   jpa:
