@@ -1,4 +1,4 @@
-version: '4.23.0'
+version: '3.8'
 
 services:
   app:
@@ -22,8 +22,6 @@ services:
       - "5432:5432"
     env_file:
       - secret_data.env
-    volumes:
-      - C:\MyDockerVolume\pgdata:/var/lib/postgresql/data
     networks:
       - backend
 
