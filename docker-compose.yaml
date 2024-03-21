@@ -3,13 +3,15 @@ version: '3.8'
 services:
   app:
     container_name: jira
+    image: jira
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     env_file:
       - secret_data.env
     networks:
@@ -22,6 +24,12 @@ services:
       - "5432:5432"
     env_file:
       - secret_data.env
+    healthcheck:
+        test: pg_isready -h localhost -U $$POSTGRES_USER
+        interval: 5s
+        timeout: 5s
+        retries: 5
+        start_period: 5s
     networks:
       - backend
 
