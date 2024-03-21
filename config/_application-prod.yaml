@@ -1,6 +1,6 @@
 # template for server
 app:
-  host-url: http://app
+  host-url: http://nginx
 spring:
   datasource:
     url: jdbc:postgresql://db:5432/jira

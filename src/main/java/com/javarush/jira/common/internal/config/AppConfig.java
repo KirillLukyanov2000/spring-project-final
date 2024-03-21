@@ -49,7 +49,7 @@ public class AppConfig {
     }
 
     public boolean isProd() {
-        return true;
+        return env.acceptsProfiles(Profiles.of("prod"));
     }
 
     public boolean isTest() {
@@ -72,7 +72,7 @@ public class AppConfig {
     }
 
     @Bean
-
+    @Profile("prod")
     public DataSource getProdDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
@@ -88,8 +88,6 @@ public class AppConfig {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.h2.Driver");
         dataSourceBuilder.url("jdbc:h2:mem:jira-test;NON_KEYWORDS=VALUE");
-        dataSourceBuilder.username("jira");
-        dataSourceBuilder.password("JiraRush");
         return dataSourceBuilder.build();
     }
 
